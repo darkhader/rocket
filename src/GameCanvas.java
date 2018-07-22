@@ -14,8 +14,8 @@ public class GameCanvas extends JPanel {
     private Graphics graphics;
 
 
-    public int possitionXStar=1024;
-    public int possitionYStar=200;
+    public int possitionXStar[]={1024,990,1000,900,800,700,500,400,300,1010};
+    public int possitionYStar[]={200,400,50,500,400,300,90,40,10,20};
     public int possitionXEnemy =800;
     public int possitionYEnemy =100;
     public int vx=2;
@@ -58,7 +58,19 @@ public class GameCanvas extends JPanel {
         Random rd = new Random();
         graphics.setColor(Color.black);
       graphics.fillRect(0,0,1024,600);
-      graphics.drawImage(this.starImage, this.possitionXStar,this.possitionYStar,10,10,null);
+        for (int i = 0; i < 10; i++) {
+
+
+        this.possitionXStar[i] -=2;
+            if (this.possitionXStar[i] < 0) {
+                this.possitionXStar[i] = rd.nextInt(1024);
+                this.possitionYStar[i] = rd.nextInt(600);
+            }
+
+
+        graphics.drawImage(this.starImage, this.possitionXStar[i],this.possitionYStar[i],10,10,null);
+        }
+
         graphics.drawImage(this.playerImage, this.possitionXPlayer,this.possitionYPlayer,40,40,null);
         graphics.drawImage(this.enemyImage, this.possitionXEnemy,this.possitionYEnemy,30,30,null);
 
@@ -81,11 +93,10 @@ public class GameCanvas extends JPanel {
             vy=-vy;
         }
         //di chuyen star
-        this.possitionXStar -=2;
-        if(this.possitionXStar<0){
-            this.possitionXStar=rd.nextInt(1024);
-            this.possitionYStar=rd.nextInt(600);
-        }
+
+
+
+
 
       this.repaint();
     }
