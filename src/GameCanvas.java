@@ -50,9 +50,6 @@ public class GameCanvas extends JPanel {
     protected void paintComponent(Graphics g) {
         //ve
         g.drawImage(this.backBuffered,0,0,null);
-//        g.setColor(Color.black);
-//        g.fillRect(0,0,1024,600);
-//        g.drawImage(this.starImage, this.possitionXStar,this.possitionYStar,20,20,null);
     }
     public void renderAll(){
         Random rd = new Random();
@@ -82,6 +79,14 @@ public class GameCanvas extends JPanel {
         if(this.possitionXPlayer<0){
             this.possitionXPlayer=1024;
             this.possitionYPlayer=rd.nextInt(600);
+        }
+        if(this.possitionYPlayer>600){
+            this.possitionYPlayer=0;
+            this.possitionXPlayer=rd.nextInt(1024);
+        }
+        if(this.possitionYPlayer<0){
+            this.possitionYPlayer=600;
+            this.possitionXPlayer=rd.nextInt(1024);
         }
         //di chuyen enemy
         this.possitionXEnemy +=vx;

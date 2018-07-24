@@ -11,10 +11,10 @@ public class GameWindow extends JFrame {
 
     public GameWindow(){
 
-        this.setSize(1024, 600);
-        this.gameCanvas = new GameCanvas();
-        this.add(gameCanvas);
-        this.addKeyListener(new KeyListener() {
+        setSize(1024, 600);
+        gameCanvas = new GameCanvas();
+        add(gameCanvas);
+        addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -28,11 +28,18 @@ public class GameWindow extends JFrame {
                 if(e.getKeyCode()==KeyEvent.VK_RIGHT){
                     gameCanvas.possitionXPlayer +=69;
                 }
+                if(e.getKeyCode()==KeyEvent.VK_DOWN){
+                    gameCanvas.possitionYPlayer +=69;
+                }
+                if(e.getKeyCode()==KeyEvent.VK_UP){
+                    gameCanvas.possitionYPlayer -=69;
+                }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_RIGHT){
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                    System.out.println("Space realeased");
 
                 }
             }
