@@ -72,7 +72,7 @@ public class GameWindow extends JFrame {
 
     public GameWindow() {
 
-        setSize(1024, 600);
+        setSize(1040, 640);
         setupGamecanvas();
         this.event();
 
