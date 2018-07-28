@@ -72,7 +72,7 @@ public class GameCanvas extends JPanel {
     private void createEnemy() {
         if (timeE == 50) {
             Enemy enemy = new Enemy();
-            enemy.image = loadImage("D:\\New folder\\rocket\\resources\\images\\circle.png");
+            enemy.image = loadImage("resources\\images\\circle.png");
             enemy.x = 600;
             enemy.y = 200;
             enemy.w = 10;
@@ -92,7 +92,7 @@ public class GameCanvas extends JPanel {
             star.vx = rd.nextInt(3) + 1;
             star.width = 10;
             star.height = 10;
-            star.image = loadImage("D:\\New folder\\rocket\\resources\\images\\star.png");
+            star.image = loadImage("resources\\images\\star.png");
             stars.add(star);
             timeS = 0;
         }
