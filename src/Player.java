@@ -1,53 +1,77 @@
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
-import java.util.Random;
-import javax.swing.JFrame;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Hiep Nguyen
- */
 public class Player {
 
-    public Random rd = new Random();
-    public static int a, b, c, m, n, o;
-    public static int x[] = {a, b, c};
-    public static int y[] = {m, n, o};
+    public Vector2D position;
+    public Vector2D velocity;
+
+    private List<Vector2D> vertices;
+
+    private Polygon polygon;
+
+    public double angle = 0.0;
+    private int timeIntervalBullet = 0;
+    private List<BulletPlayer> bulletPlayerr;
 
     public Player() {
-        a = 600;
-        n = 200;
-
+        this.position = new Vector2D();
+        this.velocity = new Vector2D();
+        this.bulletPlayerr = new ArrayList<>();
+        this.vertices = Arrays.asList(
+                new Vector2D(),
+                new Vector2D(0, 16),
+                new Vector2D(20, 8)
+        );
+        this.polygon = new Polygon();
     }
 
-    public Player(int a, int n) {
-        x[0] = a;
-        x[1] = this.b;
-        x[2] = this.c;
-        y[0] = this.m;
-        y[1] = n;
-        y[2] = this.o;
-        x[1] = x[0] + 5;
-        x[2] = x[0] + 10;
-        y[0] = y[1] + 10;
-        y[2] = y[0];
-
+    public void run() {
+        this.position.addUp(this.velocity);
+        shoot();
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics graphics) {
+        graphics.setColor(Color.RED);
 
-        g.setColor(Color.blue);
-        g.fillPolygon(this.x, this.y, 3);
+        this.updateTriangle();
 
+        graphics.fillPolygon(this.polygon);
+        this.bulletPlayerr.forEach(bulletPlayerr -> bulletPlayerr.render(graphics));
     }
 
+    private void updateTriangle() {
+        this.polygon.reset();
+        Vector2D center = this.vertices
+                .stream()
+                .reduce(new Vector2D(), (v1, v2) -> v1.add(v2))
+                .multiply(1.0f / (float) this.vertices.size())
+                .rotate(this.angle);
+
+        Vector2D translate = this.position.subtract(center);
+
+        this.vertices
+                .stream()
+                .map(vector2D -> vector2D.rotate(angle))
+                .map(vector2D -> vector2D.add(translate))
+                .forEach(vector2D -> polygon.addPoint((int) vector2D.x, (int) vector2D.y));
+    }
+
+    public void shoot() {
+
+        if (this.timeIntervalBullet == 50) {
+            BulletPlayer bulletPlayer = new BulletPlayer();
+            bulletPlayer.position.set((int) this.position.x, (int) this.position.y);
+
+            this.bulletPlayerr.add(bulletPlayer);
+            this.timeIntervalBullet = 0;
+        } else {
+            this.timeIntervalBullet += 1;
+        }
+
+        this.bulletPlayerr.forEach(bulletPlayerr -> bulletPlayerr.run());
+    }
 }

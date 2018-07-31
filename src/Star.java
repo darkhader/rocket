@@ -18,23 +18,22 @@ public class Star {
 
 
     public BufferedImage image;
-    public int x, y;
+    public Vector2D position;
     public int width;
     public int height;
-    public int vx;
-
-
+    public Vector2D velocity;
 
     public Star() {
-
+        this.position = new Vector2D();
+        this.velocity = new Vector2D();
     }
 
     public void render(Graphics g) {
-        g.drawImage(image, x, y,width,height, null);
+        g.drawImage(image,(int) position.x,(int) position.y,width,height, null);
     }
 
     public void run() {
-        x -= vx;
+        position.subtractBy(velocity);
     }
 
 }

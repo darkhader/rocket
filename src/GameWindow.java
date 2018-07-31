@@ -7,23 +7,33 @@ import java.awt.event.WindowEvent;
 
 public class GameWindow extends JFrame {
 
-    static  GameCanvas gameCanvas=new GameCanvas();
-    static  Player player=new Player();
+    private  GameCanvas gameCanvas;
+    private  BulletPlayer bullet;
     private long lastTime = 0;
 
-    public void event() {
-        windowEven();
-        keybroadEvent();
+    public GameWindow() {
+        this.setSize(1024, 600);
 
+        this.setupGameCanvas();
+
+        this.event();
+
+        this.setVisible(true);
     }
 
-    private void windowEven() {
-
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    private void setupGameCanvas() {
+        this.gameCanvas = new GameCanvas();
+        this.bullet = new BulletPlayer();
+        this.add(this.gameCanvas);
     }
 
-    private void keybroadEvent() {
-        addKeyListener(new KeyListener() {
+    private void event() {
+        this.keyboardEvent();
+        this.windowEvent();
+    }
+
+    private void keyboardEvent() {
+        this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
 
@@ -32,64 +42,55 @@ public class GameWindow extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    gameCanvas.player.x[1] -= 10;
-                    gameCanvas.player.x[0] -= 10;
-                    gameCanvas.player.x[2] -= 10;
-                    //    System.out.println(" x[0] " + gameCanvas.player.x[0] + " y[0] " + gameCanvas.player.y[0] + "\n" + " x[1] " + gameCanvas.player.x[1] + " y[1] " + gameCanvas.player.y[1] + "\n" + " x[2] " + gameCanvas.player.x[2] + " y[2] " + gameCanvas.player.y[2]);
+                    gameCanvas.player.angle -= 5.0;
+                    gameCanvas.player.velocity.set(
+                            new Vector2D(3, 0).rotate(gameCanvas.player.angle)
+                    );
+                    bullet.velocity.set(new Vector2D(6, 0).rotate(gameCanvas.player.angle)
+                    );
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    gameCanvas.player.x[1] += 10;
-                    gameCanvas.player.x[0] += 10;
-                    gameCanvas.player.x[2] += 10;
-                    //    System.out.println(" x[0] " + gameCanvas.player.x[0] + " y[0] " + gameCanvas.player.y[0] + "\n" + " x[1] " + gameCanvas.player.x[1] + " y[1] " + gameCanvas.player.y[1] + "\n" + " x[2] " + gameCanvas.player.x[2] + " y[2] " + gameCanvas.player.y[2]);
-                }
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    gameCanvas.player.y[1] += 10;
-                    gameCanvas.player.y[0] += 10;
-                    gameCanvas.player.y[2] += 10;
+                    gameCanvas.player.angle += 5.0;
+                    gameCanvas.player.velocity.set(
+                            new Vector2D(3, 0).rotate(gameCanvas.player.angle)
+                    );
+                    bullet.velocity.set(new Vector2D(6, 0).rotate(gameCanvas.player.angle)
+                    );
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
-
-                    gameCanvas.player.y[1] -= 10;
-                    gameCanvas.player.y[0] -= 10;
-                    gameCanvas.player.y[2] -= 10;
-
+                    gameCanvas.player.velocity.set(
+                            new Vector2D(5, 0).rotate(gameCanvas.player.angle));
                 }
 
             }
 
+            @Override
             public void keyReleased(KeyEvent e) {
-
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    gameCanvas.player.velocity.set(
+                            new Vector2D(3.5f, 0).rotate(gameCanvas.player.angle));
+                }
             }
         });
-
     }
 
-    private void setupGamecanvas() {
-        gameCanvas = new GameCanvas();
-        add(gameCanvas);
-    }
-
-    public GameWindow() {
-
-        setSize(1024, 600);
-        setupGamecanvas();
-        this.event();
-
-        this.setVisible(true);
-
+    private void windowEvent() {
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(1);
+            }
+        });
     }
 
     public void gameLoop() {
         while (true) {
             long currentTime = System.nanoTime();
             if (currentTime - this.lastTime >= 17_000_000) {
+                this.gameCanvas.runAll();
                 this.gameCanvas.renderAll();
                 this.lastTime = currentTime;
-                gameCanvas.runAll();
-
             }
-
         }
     }
 }
