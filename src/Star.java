@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -17,19 +16,18 @@ import java.awt.image.BufferedImage;
 public class Star {
 
 
-    public BufferedImage image;
     public Vector2D position;
-    public int width;
-    public int height;
+    public Renderer renderer;
     public Vector2D velocity;
 
     public Star() {
         this.position = new Vector2D();
         this.velocity = new Vector2D();
+        this.renderer = new ImageRenderer("resources/images/star.png", 5, 5);
     }
 
     public void render(Graphics g) {
-        g.drawImage(image,(int) position.x,(int) position.y,width,height, null);
+        renderer.render(g, position);
     }
 
     public void run() {

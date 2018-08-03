@@ -9,6 +9,7 @@ public class GameWindow extends JFrame {
 
     private  GameCanvas gameCanvas;
     private  BulletPlayer bullet;
+    
     private long lastTime = 0;
 
     public GameWindow() {
@@ -23,6 +24,7 @@ public class GameWindow extends JFrame {
 
     private void setupGameCanvas() {
         this.gameCanvas = new GameCanvas();
+        
         this.bullet = new BulletPlayer();
         this.add(this.gameCanvas);
     }
@@ -46,16 +48,16 @@ public class GameWindow extends JFrame {
                     gameCanvas.player.velocity.set(
                             new Vector2D(3, 0).rotate(gameCanvas.player.angle)
                     );
-                    bullet.velocity.set(new Vector2D(6, 0).rotate(gameCanvas.player.angle)
-                    );
+//                     bullet.velocity.angle -=5.0;
+                    
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     gameCanvas.player.angle += 5.0;
                     gameCanvas.player.velocity.set(
                             new Vector2D(3, 0).rotate(gameCanvas.player.angle)
                     );
-                    bullet.velocity.set(new Vector2D(6, 0).rotate(gameCanvas.player.angle)
-                    );
+                 
+                    
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     gameCanvas.player.velocity.set(
