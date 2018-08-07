@@ -1,27 +1,29 @@
 
-import javax.imageio.ImageIO;
+import base.GameObjManager;
+import game.background.Background;
+import game.enemy.CreateEnemy;
+import game.enemyfollow.CreateEnemyFollow;
+import game.enemyfollow.EnemyFollow;
+import game.player.Player;
+import game.star.CreateStar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class GameCanvas extends JPanel {
     
     private BufferedImage backBuffered;
     private Background background = new Background();
-    private EnemyFollow enemyFollow = new EnemyFollow();
-    private Random random = new Random();
+    
     public Player player;
     
     private Graphics graphics;
     
-    public CreateStar stars = new CreateStar();
-    public CreateEnemyShooting enemies = new CreateEnemyShooting();
-    private int timeIntervalEnemy = 0;
+    private Random random = new Random();
+    
+
     
     public GameCanvas() {
         
@@ -32,6 +34,7 @@ public class GameCanvas extends JPanel {
         this.setupCharacter();
         
         this.setVisible(true);
+        
     }
     
     private void setupBackBuffered() {
@@ -40,9 +43,13 @@ public class GameCanvas extends JPanel {
     }
     
     private void setupCharacter() {
-        stars.createStar();
-        enemies.createEnemy();
+        GameObjManager.instance.add(new CreateStar());
+        GameObjManager.instance.add(new CreateEnemy());
+        GameObjManager.instance.add(new Background());
+        GameObjManager.instance.add(new CreateEnemyFollow());
         this.setupPlayer();
+//        this.enemyFollow = new EnemyFollow();
+//        this.enemyFollow.position.set(this.random.nextInt(1024), this.random.nextInt(600));
         
     }
     
@@ -50,6 +57,7 @@ public class GameCanvas extends JPanel {
         this.player = new Player();
         this.player.position.set(200, 300);
         this.player.velocity.set(3.5f, 0);
+        GameObjManager.instance.add(this.player);//add player vao templelist
     }
     
     @Override
@@ -58,32 +66,11 @@ public class GameCanvas extends JPanel {
     }
     
     public void renderAll() {
-        this.background.render(this.graphics);
-        
-        stars.render(this.graphics);
-        enemies.render(graphics);
-        this.player.render(this.graphics);
-        enemyFollow.render(graphics);
-        
+        GameObjManager.instance.renderAll(graphics);
         this.repaint();
     }
     
     public void runAll() {
-        stars.createStar();
-        stars.run();
-        enemies.createEnemy();
-        enemies.run();
-        
-        this.player.run();
-        this.enemyFollow.update(this.player.position);
-        enemyFollow.run();
-    }
-    
-    private BufferedImage loadImage(String path) {
-        try {
-            return ImageIO.read(new File(path));
-        } catch (IOException e) {
-            return null;
-        }
+        GameObjManager.instance.runAll();
     }
 }
