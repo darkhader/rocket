@@ -1,22 +1,25 @@
 package game.player;
 
+import base.GameObjManager;
 import base.GameObject;
 import base.Vector2D;
+import game.enemyfollow.EnemyFollow;
+import input.KeyBoardInput;
 import renderer.PolygonRenderer;
 
 import java.awt.*;
 import java.util.Random;
+import physics.BoxCollider;
 
 public class Player extends GameObject {
 
     public Vector2D velocity;
 
     public double angle = 0.0;
-    private Random random = new Random();
-    public PlayerShoot playerShoot;
+    public BoxCollider boxCollider;
 
     public Player() {
-        this.position = new Vector2D();
+        position.set(200, 300);
         this.velocity = new Vector2D();
 
         this.renderer = new PolygonRenderer(Color.RED,
@@ -24,35 +27,24 @@ public class Player extends GameObject {
                 new Vector2D(0, 16),
                 new Vector2D(20, 8)
         );
-        this.playerShoot = new PlayerAttack();
+        this.attributes.add(new PlayerShoot());
+        this.attributes.add(new PlayerMove());
+        this.boxCollider = new BoxCollider(20, 20);
+
     }
 
     @Override
     public void run() {
         super.run();
 
-        this.velocity.set(
-                EventKeyboard.instance.defaultVelocity.rotate(EventKeyboard.instance.player.angle)
-        );
-        this.position.addUp(this.velocity);
-        ((PolygonRenderer) this.renderer).angle = EventKeyboard.instance.player.angle;
-        this.backToScreen();
-        this.playerShoot.run(this);
-    }
+        this.boxCollider.position.set(this.position.x - 10, this.position.y - 10);
+        EnemyFollow enemyFollow = GameObjManager.instance.checkCollision1(this);
+        if (enemyFollow != null) {
+           
+            enemyFollow.isAlive = false;
+        }
+        ((PolygonRenderer) this.renderer).angle = this.angle;
 
-    private void backToScreen() {
-        if (this.position.x > 1024) {
-            this.position.set(0, this.random.nextInt(600));
-        }
-        if (this.position.x < 0) {
-            this.position.set(1024, this.random.nextInt(600));
-        }
-        if (this.position.y > 600) {
-            this.position.set(this.random.nextInt(1024), 0);
-        }
-        if (this.position.y < 0) {
-            this.position.set(this.random.nextInt(1024), 600);
-        }
     }
 
 }

@@ -6,7 +6,7 @@
 package game.enemyfollow;
 
 import base.FrameCounter;
-import base.GameObject;
+import base.GameObj;
 import base.GameObjManager;
 import base.GameObject;
 import game.enemy.Enemy;

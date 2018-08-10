@@ -1,16 +1,14 @@
-
-import java.awt.Graphics;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package base;
 
 /**
  *
  * @author Hiep Nguyen
  */
-public interface Renderer {
-    void render(Graphics g, Vector2D position);
+public interface Attribute<T extends GameObject> {
+    void run(T gameObject);
 }
