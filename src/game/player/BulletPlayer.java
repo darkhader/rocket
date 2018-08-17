@@ -1,37 +1,58 @@
 package game.player;
 
-import renderer.ImageRenderer;
-import base.GameObj;
-import base.GameObjManager;
+import base.FrameCounter;
 import base.GameObject;
+import base.GameObjectManager;
 import base.Vector2D;
+import game.enemy.BulletEnemy;
+import game.enemy.Enemy;
 import game.enemyfollow.EnemyFollow;
-import java.awt.*;
-import physics.BoxCollider;
+import physic.BoxCollider;
+import physic.PhysicBody;
+import physic.RunHitObject;
+import physic.TuHuy;
+import renderer.ImageRenderer;
 
+public class BulletPlayer extends GameObject implements PhysicBody {
 
-
-public class BulletPlayer extends GameObject{
-
-  
     public Vector2D velocity;
-public BoxCollider boxCollider;
- 
+
+    public BoxCollider boxCollider;
+    private RunHitObject runHitObject;
+    private RunHitObject runHitObject1;
+    
+
     public BulletPlayer() {
-        this.position = new Vector2D();
         this.velocity = new Vector2D();
-        renderer = new ImageRenderer("resources/images/circle.png", 2, 2);
-      this.boxCollider=new BoxCollider(5, 5);
+        this.renderer = new ImageRenderer("resources/images/circle.png", 5, 5);
+        this.boxCollider = new BoxCollider(5, 5);
+        this.runHitObject = new RunHitObject(
+                EnemyFollow.class
+        );
+        this.runHitObject1 = new RunHitObject(
+                Enemy.class
+        );
+        
+     
     }
+
+    @Override
     public void run() {
         super.run();
         this.position.addUp(this.velocity);
-        this.boxCollider.position.set(this.position.x-2.5f,  this.position.y -2.5f);
-        EnemyFollow enemyFollow = GameObjManager.instance.checkCollision(this);
-        if(enemyFollow!=null){
-            this.isAlive =false;
-            enemyFollow.isAlive=false;
-        }
+        this.boxCollider.position.set(this.position.x - 2.5f, this.position.y - 2.5f);
+        this.runHitObject.run(this);
+        this.runHitObject1.run(this);
     }
- 
+
+    @Override
+    public void getHit(GameObject gameObject) {
+        this.isAlive = false;
+        TuHuy.instance.run(this);
+    }
+
+    @Override
+    public BoxCollider getBoxCollider() {
+        return this.boxCollider;
+    }
 }

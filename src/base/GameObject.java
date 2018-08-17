@@ -1,29 +1,33 @@
 package base;
 
-import java.awt.Graphics;
-import java.util.ArrayList;
 import renderer.Renderer;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameObject {
-    
+
     public Vector2D position;
-    public boolean isAlive = true;
+
     public Renderer renderer;
-    public List<Attribute> attributes=new ArrayList<>();
-    
+
+    public List<Attribute> attributes;
+
+    public boolean isAlive = true;
+
     public GameObject() {
         this.position = new Vector2D();
+        this.attributes = new ArrayList<>();
     }
-    
+
     public void run() {
-        this.attributes.forEach(attribute -> attribute.run(this));
+        this.attributes
+                .forEach(attribute -> attribute.run(this));
     }
-    
+
     public void render(Graphics graphics) {
-        if (this.renderer != null) {
+        if (this.renderer != null)
             this.renderer.render(graphics, this.position);
-        }
     }
 }

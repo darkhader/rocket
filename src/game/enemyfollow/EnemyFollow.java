@@ -1,39 +1,54 @@
 package game.enemyfollow;
 
-import base.GameObjManager;
+import base.FrameCounter;
 import base.GameObject;
+import base.GameObjectManager;
 import base.Vector2D;
+import game.enemy.BulletEnemy;
 import game.player.Player;
-import physics.BoxCollider;
+import physic.BoxCollider;
+import physic.PhysicBody;
 import renderer.ImageRenderer;
 
-public class EnemyFollow extends GameObject {
+public class EnemyFollow extends GameObject implements PhysicBody {
 
     public Vector2D velocity;
-public BoxCollider boxCollider;
+
+    public BoxCollider boxCollider;
+     private FrameCounter frameCounter1 = new FrameCounter(50);
 
     public EnemyFollow() {
         this.velocity = new Vector2D();
         this.renderer = new ImageRenderer("resources/images/circle.png", 20, 20);
-        this.boxCollider=new BoxCollider(20, 20); 
-   }
+        this.boxCollider = new BoxCollider(20, 20);
+    }
 
     @Override
     public void run() {
         super.run();
-        this.boxCollider.position.set(this.position.x -10, this.position.y-10);
         this.position.addUp(this.velocity);
-        for (int i = 0; i < GameObjManager.instance.list.size(); i++) {
 
-            if (GameObjManager.instance.list.get(i) instanceof Player == true) {
-               
-                this.velocity.set(GameObjManager.instance.list.get(i).position.subtract(this.position).normalized()
-                ).multiply(1.5f);
-                break;
-            } 
-            }
+        this.boxCollider.position.set(this.position.x - 10, this.position.y - 10);
+
+        Player player = GameObjectManager.instance.findPlayer();
+        if (player != null) {
+            this.update(player.position);
         }
-
     }
 
+    private void update(Vector2D position) {
+        this.velocity.set(
+                position.subtract(this.position).normalized()
+        ).multiply(1.5f);
+    }
 
+    @Override
+    public void getHit(GameObject gameObject) {
+        this.isAlive = false;
+    }
+
+    @Override
+    public BoxCollider getBoxCollider() {
+        return this.boxCollider;
+    }
+}

@@ -2,42 +2,19 @@ package game.player;
 
 import base.Attribute;
 import base.FrameCounter;
-import base.GameObjManager;
-import base.GameObject;
+import base.GameObjectManager;
 
-import java.util.ArrayList;
-import java.util.List;
+public class PlayerShoot implements Attribute<Player> {
 
-public class PlayerShoot extends GameObject implements Attribute<Player> {
-
-    private FrameCounter frameCounter = new FrameCounter(40);
-    
-//
-//
-//    public void run(Player player) {
-//
-//        if (this.frameCounter.run()) {
-//            BulletPlayer bulletPlayer = new BulletPlayer();
-//            bulletPlayer.position.set(player.position);
-//            bulletPlayer.velocity.set(player.velocity.copy()).multiply(1.5f);
-//            GameObjManager.instance.add(bulletPlayer);
-//    
-//            this.frameCounter.reset();
-//        }
-//
-// 
-//    }
+    private FrameCounter frameCounter = new FrameCounter(10);
 
     @Override
     public void run(Player gameObject) {
         if (this.frameCounter.run()) {
-            BulletPlayer bulletPlayer = new BulletPlayer();
+            BulletPlayer bulletPlayer = GameObjectManager.instance.recycle(BulletPlayer.class);
             bulletPlayer.position.set(gameObject.position);
             bulletPlayer.velocity.set(gameObject.velocity.copy()).multiply(1.5f);
-            GameObjManager.instance.add(bulletPlayer);
-    
             this.frameCounter.reset();
         }
     }
-
 }

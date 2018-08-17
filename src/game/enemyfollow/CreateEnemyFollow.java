@@ -1,39 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.enemyfollow;
 
 import base.FrameCounter;
-import base.GameObj;
-import base.GameObjManager;
 import base.GameObject;
-import game.enemy.Enemy;
+import base.GameObjectManager;
+import base.Vector2D;
+import game.enemy.BulletEnemy;
+
 import java.util.Random;
 
-/**
- *
- * @author Hiep Nguyen
- */
 public class CreateEnemyFollow extends GameObject {
 
-    private Random random;
-    private FrameCounter frameCounter;
+    private FrameCounter frameCounter = new FrameCounter(500);
+   
+    private Random random = new Random();
 
-    public CreateEnemyFollow() {
-        this.random = new Random();
-        this.frameCounter = new FrameCounter(50);
-    }
-
+    @Override
     public void run() {
         super.run();
         if (this.frameCounter.run()) {
-            EnemyFollow enemy = new EnemyFollow();
-            enemy.position.set(this.random.nextInt(1024), this.random.nextInt(600));
-
-            GameObjManager.instance.add(enemy);
+            EnemyFollow enemyFollow = GameObjectManager.instance.recycle(EnemyFollow.class);
+            enemyFollow.position.set(this.random.nextInt(1024), this.random.nextInt(600));
             this.frameCounter.reset();
+          
         }
     }
 }

@@ -1,13 +1,9 @@
 package game.enemy;
 
 import base.FrameCounter;
-import base.GameObjManager;
 import base.GameObject;
-import game.enemy.Enemy;
+import base.GameObjectManager;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class CreateEnemy extends GameObject {
@@ -15,25 +11,19 @@ public class CreateEnemy extends GameObject {
     private Random random;
     private FrameCounter frameCounter;
 
-
     public CreateEnemy() {
         this.random = new Random();
-        this.frameCounter = new FrameCounter(200);
-       
+        this.frameCounter = new FrameCounter(100);
     }
 
     @Override
     public void run() {
         super.run();
-        if (this.frameCounter.run()) {
-            Enemy enemy = new Enemy();
+        if (this.frameCounter.run()) {         
+            Enemy enemy = GameObjectManager.instance.recycle(Enemy.class);
             enemy.position.set(this.random.nextInt(1024), this.random.nextInt(600));
             enemy.velocity.set(this.random.nextInt(3) + 1, this.random.nextInt(3) + 1);
-            GameObjManager.instance.add(enemy);
             this.frameCounter.reset();
         }
     }
-
-
-   
 }

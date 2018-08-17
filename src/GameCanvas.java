@@ -1,27 +1,21 @@
-
-import base.GameObjManager;
+import base.GameObjectManager;
 import game.background.Background;
 import game.enemy.CreateEnemy;
 import game.enemyfollow.CreateEnemyFollow;
-import game.enemyfollow.EnemyFollow;
 import game.player.Player;
 import game.star.CreateStar;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 public class GameCanvas extends JPanel {
 
     private BufferedImage backBuffered;
-    private Background background = new Background();
 
     public Player player;
 
     private Graphics graphics;
-
-    private Random random = new Random();
 
     public GameCanvas() {
 
@@ -32,7 +26,6 @@ public class GameCanvas extends JPanel {
         this.setupCharacter();
 
         this.setVisible(true);
-
     }
 
     private void setupBackBuffered() {
@@ -41,12 +34,18 @@ public class GameCanvas extends JPanel {
     }
 
     private void setupCharacter() {
-        GameObjManager.instance.add(new CreateStar());
-        GameObjManager.instance.add(new CreateEnemy());
-        GameObjManager.instance.add(new Background());
-        GameObjManager.instance.add(new CreateEnemyFollow());
-        GameObjManager.instance.add(new Player());
+        GameObjectManager.instance.add(new Background());
+        GameObjectManager.instance.add(new CreateStar());
+        GameObjectManager.instance.add(new CreateEnemy());
+        GameObjectManager.instance.add(new CreateEnemyFollow());
+        this.setupPlayer();
+    }
 
+    private void setupPlayer() {
+        this.player = new Player();
+        this.player.position.set(200, 300);
+        this.player.velocity.set(3.5f, 0);
+        GameObjectManager.instance.add(this.player);
     }
 
     @Override
@@ -55,11 +54,11 @@ public class GameCanvas extends JPanel {
     }
 
     public void renderAll() {
-        GameObjManager.instance.renderAll(graphics);
+        GameObjectManager.instance.renderAll(this.graphics);
         this.repaint();
     }
 
     public void runAll() {
-        GameObjManager.instance.runAll();
+        GameObjectManager.instance.runAll();
     }
 }
