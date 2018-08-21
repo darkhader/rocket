@@ -29,7 +29,7 @@ public class TuHuy {
             tro.position.set(t.position);
             tro.velocity.set((new Vector2D(2, 0)).rotate(angle));
             if (this.frameCounter.run()) {
-
+                tro.isAlive=false;
                 frameCounter.reset();
             }
         }

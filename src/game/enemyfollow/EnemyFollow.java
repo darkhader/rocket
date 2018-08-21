@@ -15,7 +15,7 @@ public class EnemyFollow extends GameObject implements PhysicBody {
     public Vector2D velocity;
 
     public BoxCollider boxCollider;
-     private FrameCounter frameCounter1 = new FrameCounter(50);
+   
 
     public EnemyFollow() {
         this.velocity = new Vector2D();

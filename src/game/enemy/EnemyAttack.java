@@ -14,7 +14,7 @@ public class EnemyAttack implements EnemyShoot {
 
     @Override
     public void run(Enemy enemy) {
-        if (this.frameCounter.run()) {
+
             for (double angle = 0.0; angle < 360.0; angle += 360.0 / 15) {
                 BulletEnemy bulletEnemy =  GameObjectManager.instance.recycle(BulletEnemy.class);
                 bulletEnemy.position.set(enemy.position);
@@ -22,8 +22,7 @@ public class EnemyAttack implements EnemyShoot {
                         (new Vector2D(2, 0)).rotate(angle)
                 );
          
-            }
-            this.frameCounter.reset();
+
         }
     }
 }

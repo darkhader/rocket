@@ -6,7 +6,7 @@ import input.KeyboardInput;
 
 import java.util.Random;
 
-public class PlayerMove implements Attribute<Player> {
+    public class PlayerMove implements Attribute<Player> {
     private Random random = new Random();
     private Vector2D defaultVelocity = new Vector2D(3.5f, 0);
 

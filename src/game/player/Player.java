@@ -8,12 +8,13 @@ import java.awt.*;
 import physic.BoxCollider;
 import physic.PhysicBody;
 
-public class Player extends GameObject implements PhysicBody{
+public class Player extends GameObject implements PhysicBody {
 
     public Vector2D velocity;
 
     public double angle = 0.0;
-  private BoxCollider boxCollider;
+    private BoxCollider boxCollider;
+
     public Player() {
         this.velocity = new Vector2D();
         this.renderer = new PolygonRenderer(Color.RED,
@@ -36,11 +37,11 @@ public class Player extends GameObject implements PhysicBody{
 
     @Override
     public BoxCollider getBoxCollider() {
-     return this.boxCollider;
+        return this.boxCollider;
     }
 
     @Override
     public void getHit(GameObject gameObject) {
-       
+
     }
 }

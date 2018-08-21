@@ -6,6 +6,7 @@
 package physic;
 
 
+import base.FrameCounter;
 import base.GameObject;
 import base.Vector2D;
 import physic.BoxCollider;

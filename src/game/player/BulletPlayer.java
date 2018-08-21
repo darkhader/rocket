@@ -24,8 +24,10 @@ public class BulletPlayer extends GameObject implements PhysicBody {
 
     public BulletPlayer() {
         this.velocity = new Vector2D();
+        
         this.renderer = new ImageRenderer("resources/images/circle.png", 5, 5);
         this.boxCollider = new BoxCollider(5, 5);
+        
         this.runHitObject = new RunHitObject(
                 EnemyFollow.class
         );

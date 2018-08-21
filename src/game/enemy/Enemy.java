@@ -31,8 +31,12 @@ public class Enemy extends GameObject implements PhysicBody {
     public void run() {
         super.run();
         this.position.addUp(this.velocity);
-        this.enemyShoot.run(this);
+        
         this.boxCollider.position.set(this.position.x - 10, this.position.y - 10);
+        if (position.x > 1024) this.isAlive=false;
+        if (position.x < 0) this.isAlive=false;
+        if (position.y > 600) this.isAlive=false;
+        if (position.y < 0) this.isAlive=false;
  
     }
 
